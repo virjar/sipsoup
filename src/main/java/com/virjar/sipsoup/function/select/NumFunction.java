@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.virjar.sipsoup.model.JXNode;
+import com.virjar.sipsoup.model.SIPNode;
 import com.virjar.sipsoup.model.XpathNode;
 
 /**
@@ -19,14 +19,14 @@ import com.virjar.sipsoup.model.XpathNode;
  */
 public class NumFunction implements SelectFunction {
     @Override
-    public List<JXNode> call(XpathNode.ScopeEm scopeEm, Elements elements, List<String> args) {
-        List<JXNode> res = new LinkedList<JXNode>();
+    public List<SIPNode> call(XpathNode.ScopeEm scopeEm, Elements elements, List<String> args) {
+        List<SIPNode> res = new LinkedList<SIPNode>();
         if (elements != null) {
             Pattern pattern = Pattern.compile("\\d+");
             for (Element e : elements) {
                 Matcher matcher = pattern.matcher(e.ownText());
                 if (matcher.find()) {
-                    res.add(JXNode.t(matcher.group()));
+                    res.add(SIPNode.t(matcher.group()));
                 }
             }
         }

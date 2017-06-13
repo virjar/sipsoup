@@ -15,7 +15,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.virjar.sipsoup.exception.FinalTypeNotSameException;
-import com.virjar.sipsoup.model.JXNode;
+import com.virjar.sipsoup.model.SIPNode;
 import com.virjar.sipsoup.model.XpathEvaluator;
 
 /**
@@ -69,7 +69,7 @@ public class XpathUtil {
 
     public static void checkSameResultType(Collection<XpathEvaluator> xpathEvaluators)
             throws FinalTypeNotSameException {
-        JXNode.NodeType nodeType = null;
+        SIPNode.NodeType nodeType = null;
         for (XpathEvaluator xpathEvaluator : xpathEvaluators) {
             if (nodeType == null) {
                 nodeType = xpathEvaluator.judeNodeType();

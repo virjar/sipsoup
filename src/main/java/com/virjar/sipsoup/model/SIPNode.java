@@ -16,7 +16,7 @@ import org.jsoup.nodes.Element;
  * @author github.com/zhegexiaohuozi [seimimaster@gmail.com]
  * @since 2016/5/12.
  */
-public class JXNode {
+public class SIPNode {
     public enum NodeType {
         NODE, TEST
     }
@@ -29,7 +29,7 @@ public class JXNode {
         return element;
     }
 
-    public JXNode setElement(Element element) {
+    public SIPNode setElement(Element element) {
         this.element = element;
         return this;
     }
@@ -38,7 +38,7 @@ public class JXNode {
         return isText;
     }
 
-    public JXNode setText(boolean text) {
+    public SIPNode setText(boolean text) {
         isText = text;
         return this;
     }
@@ -47,19 +47,19 @@ public class JXNode {
         return textVal;
     }
 
-    public JXNode setTextVal(String textVal) {
+    public SIPNode setTextVal(String textVal) {
         this.textVal = textVal;
         return this;
     }
 
-    public static JXNode e(Element element) {
-        JXNode n = new JXNode();
+    public static SIPNode e(Element element) {
+        SIPNode n = new SIPNode();
         n.setElement(element).setText(false);
         return n;
     }
 
-    public static JXNode t(String txt) {
-        JXNode n = new JXNode();
+    public static SIPNode t(String txt) {
+        SIPNode n = new SIPNode();
         n.setTextVal(txt).setText(true);
         return n;
     }

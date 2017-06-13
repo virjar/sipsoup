@@ -6,7 +6,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.google.common.collect.Lists;
-import com.virjar.sipsoup.model.JXNode;
+import com.virjar.sipsoup.model.SIPNode;
 import com.virjar.sipsoup.model.XpathNode;
 
 /**
@@ -20,14 +20,14 @@ public class TextFunction implements SelectFunction {
      * @return
      */
     @Override
-    public List<JXNode> call(XpathNode.ScopeEm scopeEm, Elements elements, List<String> args) {
-        List<JXNode> res = Lists.newLinkedList();
+    public List<SIPNode> call(XpathNode.ScopeEm scopeEm, Elements elements, List<String> args) {
+        List<SIPNode> res = Lists.newLinkedList();
         if (elements != null && elements.size() > 0) {
             for (Element e : elements) {
                 if (e.nodeName().equals("script")) {
-                    res.add(JXNode.t(e.data()));
+                    res.add(SIPNode.t(e.data()));
                 } else {
-                    res.add(JXNode.t(e.ownText()));
+                    res.add(SIPNode.t(e.ownText()));
                 }
             }
         }

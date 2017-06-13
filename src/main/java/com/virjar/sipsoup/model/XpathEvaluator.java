@@ -20,60 +20,60 @@ import com.virjar.sipsoup.util.XpathUtil;
  * Created by virjar on 17/6/9.
  */
 public abstract class XpathEvaluator {
-    public abstract List<JXNode> evaluate(List<JXNode> elements);
+    public abstract List<SIPNode> evaluate(List<SIPNode> elements);
 
-    public List<JXNode> evaluate(Elements elements) {
-        return evaluate(Lists.transform(elements, new Function<Element, JXNode>() {
+    public List<SIPNode> evaluate(Elements elements) {
+        return evaluate(Lists.transform(elements, new Function<Element, SIPNode>() {
             @Override
-            public JXNode apply(Element input) {
-                return JXNode.e(input);
+            public SIPNode apply(Element input) {
+                return SIPNode.e(input);
             }
         }));
     }
 
-    public List<JXNode> evaluate(Element element) {
+    public List<SIPNode> evaluate(Element element) {
         return evaluate(new Elements(element));
     }
 
-    public List<String> evaluateToString(List<JXNode> jxNodes) {
-        return transformToString(evaluate(jxNodes));
+    public List<String> evaluateToString(List<SIPNode> SIPNodes) {
+        return transformToString(evaluate(SIPNodes));
     }
 
     public List<String> evaluateToString(Element element) {
         return transformToString(evaluate(element));
     }
 
-    public List<Element> evaluateToElement(List<JXNode> jxNodes) {
-        return transformToElement(evaluate(jxNodes));
+    public List<Element> evaluateToElement(List<SIPNode> SIPNodes) {
+        return transformToElement(evaluate(SIPNodes));
     }
 
     public List<Element> evaluateToElement(Element element) {
         return transformToElement(evaluate(element));
     }
 
-    public static List<Element> transformToElement(List<JXNode> jxNodes) {
-        return Lists.newLinkedList(Iterables.transform(Iterables.filter(jxNodes, new Predicate<JXNode>() {
+    public static List<Element> transformToElement(List<SIPNode> SIPNodes) {
+        return Lists.newLinkedList(Iterables.transform(Iterables.filter(SIPNodes, new Predicate<SIPNode>() {
             @Override
-            public boolean apply(JXNode input) {
+            public boolean apply(SIPNode input) {
                 return input.getElement() != null;
             }
-        }), new Function<JXNode, Element>() {
+        }), new Function<SIPNode, Element>() {
             @Override
-            public Element apply(JXNode input) {
+            public Element apply(SIPNode input) {
                 return input.getElement();
             }
         }));
     }
 
-    public static List<String> transformToString(List<JXNode> jxNodes) {
-        return Lists.newLinkedList(Iterables.transform(Iterables.filter(jxNodes, new Predicate<JXNode>() {
+    public static List<String> transformToString(List<SIPNode> SIPNodes) {
+        return Lists.newLinkedList(Iterables.transform(Iterables.filter(SIPNodes, new Predicate<SIPNode>() {
             @Override
-            public boolean apply(JXNode input) {
+            public boolean apply(SIPNode input) {
                 return input.isText();
             }
-        }), new Function<JXNode, String>() {
+        }), new Function<SIPNode, String>() {
             @Override
-            public String apply(JXNode input) {
+            public String apply(SIPNode input) {
                 return input.getTextVal();
             }
         }));
@@ -84,7 +84,7 @@ public abstract class XpathEvaluator {
      *
      * @return type
      */
-    public abstract JXNode.NodeType judeNodeType() throws FinalTypeNotSameException;
+    public abstract SIPNode.NodeType judeNodeType() throws FinalTypeNotSameException;
 
     public XpathEvaluator wrap(XpathEvaluator newRule) {
         throw new UnsupportedOperationException();
@@ -93,12 +93,12 @@ public abstract class XpathEvaluator {
     public static class AnanyseStartEvaluator extends XpathEvaluator {
 
         @Override
-        public List<JXNode> evaluate(List<JXNode> elements) {
+        public List<SIPNode> evaluate(List<SIPNode> elements) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public JXNode.NodeType judeNodeType() throws FinalTypeNotSameException {
+        public SIPNode.NodeType judeNodeType() throws FinalTypeNotSameException {
             throw new UnsupportedOperationException();
         }
 
@@ -115,18 +115,18 @@ public abstract class XpathEvaluator {
             this.xpathNodeList = xpathNodeList;
         }
 
-        private List<JXNode> handleNode(List<JXNode> input, final XpathNode xpathNode) {
+        private List<SIPNode> handleNode(List<SIPNode> input, final XpathNode xpathNode) {
 
             // 目前只支持对element元素进行抽取,如果中途抽取到了文本,则会断节
             List<Element> elements = Lists
-                    .newLinkedList(Sets.newHashSet(Iterables.transform(Iterables.filter(input, new Predicate<JXNode>() {
+                    .newLinkedList(Sets.newHashSet(Iterables.transform(Iterables.filter(input, new Predicate<SIPNode>() {
                         @Override
-                        public boolean apply(JXNode input) {
+                        public boolean apply(SIPNode input) {
                             return !input.isText();
                         }
-                    }), new Function<JXNode, Element>() {
+                    }), new Function<SIPNode, Element>() {
                         @Override
-                        public Element apply(JXNode input) {
+                        public Element apply(SIPNode input) {
                             return input.getElement();
                         }
                     })));
@@ -148,25 +148,25 @@ public abstract class XpathEvaluator {
             }
 
             // 调用抽取函数
-            List<JXNode> jxNodes = xpathNode.getSelectFunction().call(xpathNode.getScopeEm(),
+            List<SIPNode> SIPNodes = xpathNode.getSelectFunction().call(xpathNode.getScopeEm(),
                     new Elements(contextElements), xpathNode.getSelectParams());
 
             // 谓语过滤
             if (xpathNode.getPredicate() == null) {
-                return jxNodes;
+                return SIPNodes;
             }
 
             // 谓语只支持对元素过滤,非元素节点直接被过滤
-            return Lists.newLinkedList(Iterables.filter(jxNodes, new Predicate<JXNode>() {
+            return Lists.newLinkedList(Iterables.filter(SIPNodes, new Predicate<SIPNode>() {
                 @Override
-                public boolean apply(JXNode input) {
+                public boolean apply(SIPNode input) {
                     return xpathNode.getPredicate().isValid(input.getElement());
                 }
             }));
         }
 
         @Override
-        public List<JXNode> evaluate(List<JXNode> elements) {
+        public List<SIPNode> evaluate(List<SIPNode> elements) {
             for (XpathNode xpathNode : xpathNodeList) {// 对xpath语法树上面每个节点进行抽取
                 elements = handleNode(elements, xpathNode);
             }
@@ -174,7 +174,7 @@ public abstract class XpathEvaluator {
         }
 
         @Override
-        public JXNode.NodeType judeNodeType() throws FinalTypeNotSameException {
+        public SIPNode.NodeType judeNodeType() throws FinalTypeNotSameException {
             // Predicate predicate = xpathNodeList.getLast().getPredicate();
             // return null;// TODO 优化谓语结构后实现
             // return xpathNodeList.getLast().getTagName()
@@ -189,9 +189,9 @@ public abstract class XpathEvaluator {
         }
 
         @Override
-        public List<JXNode> evaluate(List<JXNode> elements) {
+        public List<SIPNode> evaluate(List<SIPNode> elements) {
             Iterator<XpathEvaluator> iterator = subEvaluators.iterator();
-            List<JXNode> evaluate = iterator.next().evaluate(elements);
+            List<SIPNode> evaluate = iterator.next().evaluate(elements);
             while (iterator.hasNext()) {
                 evaluate.addAll(iterator.next().evaluate(elements));
             }
@@ -199,7 +199,7 @@ public abstract class XpathEvaluator {
         }
 
         @Override
-        public JXNode.NodeType judeNodeType() throws FinalTypeNotSameException {
+        public SIPNode.NodeType judeNodeType() throws FinalTypeNotSameException {
             XpathUtil.checkSameResultType(subEvaluators);
             return subEvaluators.iterator().next().judeNodeType();
         }
@@ -219,9 +219,9 @@ public abstract class XpathEvaluator {
         }
 
         @Override
-        public List<JXNode> evaluate(List<JXNode> elements) {
+        public List<SIPNode> evaluate(List<SIPNode> elements) {
             Iterator<XpathEvaluator> iterator = subEvaluators.iterator();
-            List<JXNode> evaluate = iterator.next().evaluate(elements);
+            List<SIPNode> evaluate = iterator.next().evaluate(elements);
             while (iterator.hasNext()) {
                 evaluate.retainAll(iterator.next().evaluate(elements));
             }
@@ -229,7 +229,7 @@ public abstract class XpathEvaluator {
         }
 
         @Override
-        public JXNode.NodeType judeNodeType() throws FinalTypeNotSameException {
+        public SIPNode.NodeType judeNodeType() throws FinalTypeNotSameException {
             XpathUtil.checkSameResultType(subEvaluators);
             return subEvaluators.iterator().next().judeNodeType();
         }

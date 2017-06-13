@@ -4,7 +4,7 @@ import org.jsoup.nodes.Element;
 
 import com.google.common.collect.Lists;
 import com.virjar.sipsoup.exception.XpathSyntaxErrorException;
-import com.virjar.sipsoup.model.JXNode;
+import com.virjar.sipsoup.model.SIPNode;
 import com.virjar.sipsoup.model.XpathEvaluator;
 import com.virjar.sipsoup.parse.XpathParser;
 import com.virjar.sipsoup.parse.expression.SyntaxNode;
@@ -21,7 +21,7 @@ public class XpathHandler implements TokenHandler {
         return new SyntaxNode() {
             @Override
             public Object calc(Element element) {
-                return xpathEvaluator.evaluate(Lists.newArrayList(JXNode.e(element)));
+                return xpathEvaluator.evaluate(Lists.newArrayList(SIPNode.e(element)));
             }
 
             @Override

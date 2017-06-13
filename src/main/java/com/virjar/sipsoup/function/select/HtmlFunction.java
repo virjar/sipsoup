@@ -6,7 +6,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.google.common.collect.Lists;
-import com.virjar.sipsoup.model.JXNode;
+import com.virjar.sipsoup.model.SIPNode;
 import com.virjar.sipsoup.model.XpathNode;
 
 /**
@@ -18,11 +18,11 @@ import com.virjar.sipsoup.model.XpathNode;
 public class HtmlFunction implements SelectFunction {
 
     @Override
-    public List<JXNode> call(XpathNode.ScopeEm scopeEm, Elements elements, List<String> args) {
-        List<JXNode> res = Lists.newLinkedList();
+    public List<SIPNode> call(XpathNode.ScopeEm scopeEm, Elements elements, List<String> args) {
+        List<SIPNode> res = Lists.newLinkedList();
         if (elements != null && elements.size() > 0) {
             for (Element e : elements) {
-                res.add(JXNode.t(e.html()));
+                res.add(SIPNode.t(e.html()));
             }
         }
         return res;

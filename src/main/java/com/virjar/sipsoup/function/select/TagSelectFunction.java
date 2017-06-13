@@ -8,7 +8,7 @@ import org.jsoup.select.Elements;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.virjar.sipsoup.model.JXNode;
+import com.virjar.sipsoup.model.SIPNode;
 import com.virjar.sipsoup.model.XpathNode;
 
 /**
@@ -16,7 +16,7 @@ import com.virjar.sipsoup.model.XpathNode;
  */
 public class TagSelectFunction implements SelectFunction {
     @Override
-    public List<JXNode> call(XpathNode.ScopeEm scopeEm, Elements elements, List<String> args) {
+    public List<SIPNode> call(XpathNode.ScopeEm scopeEm, Elements elements, List<String> args) {
         String tagName = args.get(0);
         List<Element> temp = Lists.newLinkedList();
 
@@ -44,10 +44,10 @@ public class TagSelectFunction implements SelectFunction {
             }
         }
 
-        return Lists.transform(temp, new Function<Element, JXNode>() {
+        return Lists.transform(temp, new Function<Element, SIPNode>() {
             @Override
-            public JXNode apply(Element input) {
-                return JXNode.e(input);
+            public SIPNode apply(Element input) {
+                return SIPNode.e(input);
             }
         });
     }

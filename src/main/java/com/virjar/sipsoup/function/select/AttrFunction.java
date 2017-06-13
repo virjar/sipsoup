@@ -7,7 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.google.common.collect.Lists;
-import com.virjar.sipsoup.model.JXNode;
+import com.virjar.sipsoup.model.SIPNode;
 import com.virjar.sipsoup.model.XpathNode;
 
 /**
@@ -15,8 +15,8 @@ import com.virjar.sipsoup.model.XpathNode;
  */
 public class AttrFunction implements SelectFunction {
     @Override
-    public List<JXNode> call(XpathNode.ScopeEm scopeEm, Elements elements, List<String> args) {
-        List<JXNode> ret = Lists.newLinkedList();
+    public List<SIPNode> call(XpathNode.ScopeEm scopeEm, Elements elements, List<String> args) {
+        List<SIPNode> ret = Lists.newLinkedList();
         boolean allAttr = StringUtils.equals(args.get(0), "*");
         String attrName = args.get(0);
         for (Element element : elements) {
@@ -31,13 +31,13 @@ public class AttrFunction implements SelectFunction {
         return ret;
     }
 
-    private void handle(boolean allAttr, String attrKey, Element element, List<JXNode> ret) {
+    private void handle(boolean allAttr, String attrKey, Element element, List<SIPNode> ret) {
         if (allAttr) {
-            ret.add(JXNode.t(element.attributes().toString()));
+            ret.add(SIPNode.t(element.attributes().toString()));
         } else {
             String value = element.attr(attrKey);
             if (StringUtils.isNotBlank(value)) {
-                ret.add(JXNode.t(value));
+                ret.add(SIPNode.t(value));
             }
         }
     }

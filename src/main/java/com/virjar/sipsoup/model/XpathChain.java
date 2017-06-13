@@ -16,7 +16,7 @@ public class XpathChain {
     /**
      * xpath最终的数据,可能是节点集或者字符集
      */
-    private JXNode.NodeType finalType;
+    private SIPNode.NodeType finalType;
 
     @Getter
     private LinkedList<XpathNode> xpathNodeList = Lists.newLinkedList();
