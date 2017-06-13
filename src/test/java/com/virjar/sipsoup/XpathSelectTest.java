@@ -37,6 +37,6 @@ public class XpathSelectTest {
         handleURL("http://www.1905.com/newgallery/hdpic/846385.shtml?fr=wwwmdb_stargener_picture_20141010");
         handleURL("http://www.1905.com/newgallery/hdpic/898930.shtml?fr=wwwmdb_stargener_picture_20141010");
         handleURL("http://www.1905.com/newgallery/hdpic/817834.shtml?fr=wwwmdb_stargener_picture_20141010");
-
+        System.out.println("图片下载完成");
     }
 }
