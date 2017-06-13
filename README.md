@@ -12,7 +12,7 @@ sipSoup本身也应该叫做Xsoup,JsoupXpath之类的,但是他出身太晚了,�
 检查,我希望JsoupXpath可以类似Xsoup一样做链式抽取,我希望规则模型可以缓存。所以尝试着对JsopXpath进行重构。
 
 SipSoup本质是对JsoupXpath重构而来的,里面少部分代码仍然是JsoupXpath的,这里非常感谢JsoupXpath,但是绝大部分代码都被替换了,所以本身SipSoup不算依赖JsoupXpath(组件结构几乎还和JsoupXpath保持了一致)。
-目前看来,SipSoup完全兼容JsoupXpath,因为它本身自JsoupXpath发展而来。关于JsoupXpath的相关资料,参考 ![JSoupXpath](http://www.oschina.net/p/Jsoupxpath)
+目前看来,SipSoup完全兼容JsoupXpath,因为它本身自JsoupXpath发展而来。关于JsoupXpath的相关资料,参考 [JSoupXpath](http://www.oschina.net/p/Jsoupxpath)
 
 以下为改动点
 
