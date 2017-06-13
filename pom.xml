@@ -35,5 +35,17 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.12</version>
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.virjar</groupId>
+            <artifactId>dungproxy-client</artifactId>
+            <version>0.0.7</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
