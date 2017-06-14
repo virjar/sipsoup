@@ -25,7 +25,8 @@ public class TagSelectFunction implements SelectFunction {
                 for (Element element : elements) {
                     temp.addAll(element.getAllElements());
                 }
-                temp.addAll(elements);
+                // 应该是在子节点查找,本节点应该忽略
+                // temp.addAll(elements);
             } else {
                 temp.addAll(elements.select(tagName));
             }
@@ -34,7 +35,7 @@ public class TagSelectFunction implements SelectFunction {
                 for (Element element : elements) {
                     temp.addAll(element.children());
                 }
-                temp.addAll(elements);
+                // temp.addAll(elements);
             } else {
                 for (Element element : elements) {
                     if (StringUtils.equals(element.tagName(), tagName)) {

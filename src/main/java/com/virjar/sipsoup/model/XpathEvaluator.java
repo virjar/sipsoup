@@ -51,6 +51,22 @@ public abstract class XpathEvaluator {
         return transformToElement(evaluate(element));
     }
 
+    public Elements evaluateToElements(List<SIPNode> nodeLists) {
+        return new Elements(evaluateToElement(nodeLists));
+    }
+
+    public Elements evaluateToElements(Element element) {
+        return new Elements(evaluateToElement(element));
+    }
+
+    public String evaluateToSingleStr(Element element) {
+        List<String> strings = evaluateToString(element);
+        if (strings.size() == 0) {
+            return null;
+        }
+        return strings.get(0);
+    }
+
     public static List<Element> transformToElement(List<SIPNode> SIPNodes) {
         return Lists.newLinkedList(Iterables.transform(Iterables.filter(SIPNodes, new Predicate<SIPNode>() {
             @Override
@@ -118,8 +134,8 @@ public abstract class XpathEvaluator {
         private List<SIPNode> handleNode(List<SIPNode> input, final XpathNode xpathNode) {
 
             // 目前只支持对element元素进行抽取,如果中途抽取到了文本,则会断节
-            List<Element> elements = Lists
-                    .newLinkedList(Sets.newHashSet(Iterables.transform(Iterables.filter(input, new Predicate<SIPNode>() {
+            List<Element> elements = Lists.newLinkedList(
+                    Sets.newHashSet(Iterables.transform(Iterables.filter(input, new Predicate<SIPNode>() {
                         @Override
                         public boolean apply(SIPNode input) {
                             return !input.isText();
