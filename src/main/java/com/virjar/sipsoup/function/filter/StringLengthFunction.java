@@ -7,19 +7,16 @@ import org.jsoup.nodes.Element;
 import com.virjar.sipsoup.parse.expression.SyntaxNode;
 
 /**
- * Created by virjar on 17/6/14.
- * 
- * @since 0.0.1
- * @author virjar 获取当前节点的节点名称
+ * Created by virjar on 17/6/15.
  */
-public class TagNameFunction implements FilterFunction {
+public class StringLengthFunction extends AbStractStringFunction {
     @Override
     public Object call(Element element, List<SyntaxNode> params) {
-        return element.tagName();
+        return firstParamToString(element, params);
     }
 
     @Override
     public String getName() {
-        return "tagName";
+        return "string-length";
     }
 }

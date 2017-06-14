@@ -85,4 +85,11 @@ public class XpathUtil {
         }
         return obj.toString();
     }
+
+    public static Element root(Element el) {
+        while (el.parent() == null) {
+            el = el.parent();
+        }
+        return el;
+    }
 }

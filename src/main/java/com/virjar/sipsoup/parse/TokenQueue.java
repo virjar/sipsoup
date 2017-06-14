@@ -183,8 +183,8 @@ public class TokenQueue {
         }
 
         int start = pos + 1;
-        for (; start < queue.length(); start++) {
-            if (Character.isLetterOrDigit(queue.charAt(start))) {
+        for (; start < queue.length(); start++) {// xpath的函数名称里面,允许有 "-"
+            if (Character.isLetterOrDigit(queue.charAt(start)) || queue.charAt(start) == '-') {
                 continue;
             }
             return queue.charAt(start) == '(' && queue.indexOf(')', start) > 0;
