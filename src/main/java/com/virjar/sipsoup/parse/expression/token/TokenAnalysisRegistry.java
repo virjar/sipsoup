@@ -26,14 +26,16 @@ public class TokenAnalysisRegistry {
         registerHandler(new XpathHandler());
         registerHandler(new ExpressionHandler());
 
-        registerConsumer(new AttributeActionConsumer());
-        registerConsumer(new BooleanConsumer());
-        registerConsumer(new StringConstantConsumer());
-        registerConsumer(new FunctionConsumer());
-        registerConsumer(new DigitConsumer());
-        registerConsumer(new XpathConsumer());
-        registerConsumer(new OperatorConsumer());
-        registerConsumer(new ExpressionConsumer());
+        registerConsumer(new OperatorConsumer());// 40 指定字符开头 div(23) 可以理解为一个函数,也可以理解为一个除法运算,这种歧义不解决了
+        registerConsumer(new DigitConsumer());// 50 数字开头
+        registerConsumer(new FunctionConsumer());// 60 identify开头,紧随左括号,和一般字母可能冲突
+        registerConsumer(new BooleanConsumer());// 70 true,false
+
+        // 下面的token不会冲突
+        registerConsumer(new AttributeActionConsumer());// 10 @开头
+        registerConsumer(new StringConstantConsumer());// 30 单号开头
+        registerConsumer(new XpathConsumer());// 20 反引号开头
+        registerConsumer(new ExpressionConsumer());// 0 括号开头
 
         // TODO
         registerConsumer(new DefaultWordConsumer());
@@ -41,6 +43,10 @@ public class TokenAnalysisRegistry {
     }
 
     public static void registerHandler(TokenHandler tokenHandler) {
+        if (Token.OPERATOR.equals(tokenHandler.typeName()) && allHandler.containsKey(Token.OPERATOR)) {
+            throw new IllegalStateException(
+                    "can not register operator handler,operator handler must hold by framework");
+        }
         allHandler.put(tokenHandler.typeName(), tokenHandler);
     }
 

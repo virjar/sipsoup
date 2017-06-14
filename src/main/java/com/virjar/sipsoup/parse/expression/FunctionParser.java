@@ -2,8 +2,6 @@ package com.virjar.sipsoup.parse.expression;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.common.collect.Lists;
 import com.virjar.sipsoup.exception.NoSuchFunctionException;
 import com.virjar.sipsoup.exception.XpathSyntaxErrorException;
@@ -45,11 +43,6 @@ public class FunctionParser {
         while ((paramTokenQueue.consumeWhitespace() && !paramTokenQueue.consumeWhitespace())
                 || !paramTokenQueue.isEmpty()) {
 
-            if (paramTokenQueue.peek() == ',') {
-                paramTokenQueue.advance();
-                paramTokenQueue.consumeWhitespace();
-            }
-
             boolean hint = false;
             for (TokenConsumer tokenConsumer : TokenAnalysisRegistry.consumerIterable()) {
                 if (excludeForParam(tokenConsumer.tokenType())) {
@@ -62,30 +55,21 @@ public class FunctionParser {
                 }
                 hint = true;
                 paramList.add(TokenAnalysisRegistry.findHandler(tokenConsumer.tokenType()).parseToken(consume));
-                // paramList.add(TokenNodeFactory
-                // .hintAndGen(new ExpressionParser.TokenHolder(consume, tokenConsumer.tokenType())));
                 break;
             }
 
-            if (hint) {
-                continue;
+            if (!hint) {
+                throw new XpathSyntaxErrorException(paramTokenQueue.nowPosition(), "can not parse param list: "
+                        + paramTokenQueue.getQueue() + "  ,for token " + paramTokenQueue.remainder());
             }
 
-            String param = paramTokenQueue.consumeTo(",");
-            if (StringUtils.isEmpty(param)) {
-                continue;
-            }
-
-            try {
-                // ExpressionParser.TokenHolder tokenHolder = new ExpressionParser.TokenHolder(param, Token.XPATH);
-                // SyntaxNode syntaxNode = TokenNodeFactory.hintAndGen(tokenHolder);
-                // paramList.add(syntaxNode);
-                paramList.add(TokenAnalysisRegistry.findHandler(Token.XPATH).parseToken(param));
-            } catch (XpathSyntaxErrorException e) {
-                // 尝试当作xpath处理,如果能,则当作普通字符串常量处理
-                // ExpressionParser.TokenHolder tokenHolder = new ExpressionParser.TokenHolder(param, Token.CONSTANT);
-                // paramList.add(TokenNodeFactory.hintAndGen(tokenHolder));
-                paramList.add(TokenAnalysisRegistry.findHandler(Token.CONSTANT).parseToken(param));
+            paramTokenQueue.consumeWhitespace();
+            if (paramTokenQueue.isEmpty()) {
+                if (paramTokenQueue.peek() != ',') {
+                    throw new XpathSyntaxErrorException(paramTokenQueue.nowPosition(), "can not parse param list: "
+                            + paramTokenQueue.getQueue() + "  ,for token " + paramTokenQueue.remainder());
+                }
+                paramTokenQueue.advance();
             }
 
         }
