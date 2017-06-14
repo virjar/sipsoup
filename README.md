@@ -6,7 +6,7 @@ sipsoup是一个基于Jsoup的xpath实现，他将Jsoup的cssQuery变成了xpath
 
 sipSoup本身也应该叫做Xsoup,JsoupXpath之类的,但是他出身太晚了,名字被占了,但是我觉得还是应该喝汤,所以我喜欢sipSoup这个名字。
 
-每一个爬虫框架作者都应该实现一个xpath, sipsoup 出现也是如此,在我设计爬虫框架vscrawler的时候,考虑如何定位抽取数据,甚至如何整合其他爬虫框架的抽取API,
+每一个爬虫框架作者都应该实现一个xpath, sipsoup 出现也是如此,在我设计爬虫框架[vscrawler](http://git.oschina.net/virjar/vscrawler)的时候,考虑如何定位抽取数据,甚至如何整合其他爬虫框架的抽取API,
 然后调研了Xsoup和JsoupXpath,看到JsoupXpath眼前一亮,我觉得他肯定适合我的需要,所以尝试使用JsoupXpath对接了Xsoup,因为JsoupXpath实现了xpath2.0的绝大部分语法功能,
 使用JsoupXpath可以非常灵活自由的实现xpath。但是在整合的过程,我发现JsoupXpath有一点不符合我的需求,就是他都是运行的适合抛错,我希望能够在编译xpath表达式的时候,就可以做语法
 检查,我希望JsoupXpath可以类似Xsoup一样做链式抽取,我希望规则模型可以缓存。所以尝试着对JsopXpath进行重构。
