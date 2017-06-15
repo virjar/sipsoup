@@ -125,13 +125,10 @@ SipSoup的轴和标准Xpath的轴保持兼容,但是也有一个地方不一样,
 
 轴函数列表
 
-<style>
-table th:first-of-type {
-    width: 100px;
-}
-</style>
+
+
 |函数名称|参数|作用|
-|---|---|---|
+|------:|:------|:------|
 |ancestor|无|全部祖先节点 父亲，爷爷 ， 爷爷的父亲...|
 |ancestorOrSelf|无|全部祖先节点和自身节点|
 |cacheCss|css query表达式|内部实现路由至Jsoup的select,和css轴不一样的是,cacheCss会对css规则进行缓存,在遇到大量同类型网页的解析的时候,可能一个css规则被多次使用,缓存css能够减少css规则编译的消耗,提升性能|
