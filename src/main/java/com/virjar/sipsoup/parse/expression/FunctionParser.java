@@ -64,10 +64,10 @@ public class FunctionParser {
             }
 
             paramTokenQueue.consumeWhitespace();
-            if (paramTokenQueue.isEmpty()) {
+            if (!paramTokenQueue.isEmpty()) {
                 if (paramTokenQueue.peek() != ',') {
-                    throw new XpathSyntaxErrorException(paramTokenQueue.nowPosition(), "can not parse param list: "
-                            + paramTokenQueue.getQueue() + "  ,for token " + paramTokenQueue.remainder());
+                    throw new XpathSyntaxErrorException(paramTokenQueue.nowPosition(), "can not parse param list: \""
+                            + paramTokenQueue.getQueue() + "\"  ,for token " + paramTokenQueue.remainder());
                 }
                 paramTokenQueue.advance();
             }

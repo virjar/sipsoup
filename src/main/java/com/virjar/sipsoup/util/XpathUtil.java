@@ -9,14 +9,18 @@ package com.virjar.sipsoup.util;
  * License.
  */
 
+import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.virjar.sipsoup.exception.EvaluateException;
 import com.virjar.sipsoup.exception.FinalTypeNotSameException;
 import com.virjar.sipsoup.model.SIPNode;
 import com.virjar.sipsoup.model.XpathEvaluator;
+import com.virjar.sipsoup.parse.expression.SyntaxNode;
 
 /**
  * @author: github.com/zhegexiaohuozi [seimimaster@gmail.com] Date: 14-3-15
@@ -91,5 +95,35 @@ public class XpathUtil {
             el = el.parent();
         }
         return el;
+    }
+
+    public static BigDecimal toBigDecimal(Number number) {
+        if (number instanceof BigDecimal) {
+            return (BigDecimal) number;
+        }
+        if (number instanceof Integer) {
+            return new BigDecimal(number.intValue());
+        }
+        if (number instanceof Double || number instanceof Float) {// BigDecimal float 也是转double
+            return new BigDecimal(number.doubleValue());
+        }
+        if (number instanceof Long) {
+            return new BigDecimal(number.longValue());
+        }
+        return new BigDecimal(number.toString());
+    }
+
+    public static Integer firstParamToInt(List<SyntaxNode> params, Element element, String functionName) {
+        if (params.size() > 0) {
+            Object calc = params.get(0).calc(element);
+            if (calc != null && !(calc instanceof Integer)) {
+                throw new EvaluateException(functionName + " parameter must be integer");
+            } else {
+                if (calc != null) {
+                    return (Integer) calc;
+                }
+            }
+        }
+        return null;
     }
 }

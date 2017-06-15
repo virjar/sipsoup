@@ -59,7 +59,8 @@ public class XpathParser {
                             try {
                                 return Optional.of(new XpathParser(key).parse());
                             } catch (XpathSyntaxErrorException e) {
-                                return Optional.absent();
+                                // return Optional.absent();
+                                throw e;// TODO 可能把异常吞没了,考虑如何处理
                             }
                         }
                     });

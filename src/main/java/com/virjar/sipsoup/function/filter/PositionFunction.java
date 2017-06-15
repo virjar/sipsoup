@@ -16,6 +16,12 @@ import com.virjar.sipsoup.util.XpathUtil;
 public class PositionFunction implements FilterFunction {
     @Override
     public Object call(Element element, List<SyntaxNode> params) {
+        if (params.size() > 0) {
+            Object calc = params.get(0).calc(element);
+            if (calc instanceof Element) {
+                return XpathUtil.getElIndexInSameTags((Element) calc);
+            }
+        }
         return XpathUtil.getElIndexInSameTags(element);
     }
 
