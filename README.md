@@ -125,6 +125,11 @@ SipSoup的轴和标准Xpath的轴保持兼容,但是也有一个地方不一样,
 
 轴函数列表
 
+<style>
+table th:first-of-type {
+    width: 100px;
+}
+</style>
 |函数名称|参数|作用|
 |---|---|---|
 |ancestor|无|全部祖先节点 父亲，爷爷 ， 爷爷的父亲...|
