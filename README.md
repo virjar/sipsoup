@@ -64,3 +64,98 @@ demo如下:
 2. ``a[position(parent(2)) %2 =0]`` 这是复杂谓语的一个简单应用,首先a\[xxx\]定位到a标签,然后使用parent函数得到他的爷爷节点,(parent函数可以带参数,必须是一个数字,2代表父亲的父亲,也就是得到了li标签)
 3. 然后使用position函数得到这个li元素的position偏移,也就是他是第几个li。
 4. 最后,让他和2取模,如果结果为0,代表他就是偶数资源
+
+## 具体文档
+### 函数
+所有支持的函数,可以通过如下demo得到 [解析函数的demo](http://git.oschina.net/virjar/sipsoup/blob/master/src/test/java/com/virjar/sipsoup/FunctionListTest.java)
+```
+轴函数 :ancestor
+轴函数 :ancestorOrSelf
+轴函数 :cacheCss
+轴函数 :child
+轴函数 :css
+轴函数 :descendant
+轴函数 :descendantOrSelf
+轴函数 :followingSibling
+轴函数 :followingSiblingOne
+轴函数 :parent
+轴函数 :precedingSibling
+轴函数 :precedingSiblingOne
+轴函数 :self
+轴函数 :sibling
+谓语过滤函数 :abs
+谓语过滤函数 :allText
+谓语过滤函数 :boolean
+谓语过滤函数 :concat
+谓语过滤函数 :contains
+谓语过滤函数 :false
+谓语过滤函数 :first
+谓语过滤函数 :hasClass
+谓语过滤函数 :last
+谓语过滤函数 :lower-case
+谓语过滤函数 :matches
+谓语过滤函数 :name
+谓语过滤函数 :not
+谓语过滤函数 :nullToDefault
+谓语过滤函数 :parent
+谓语过滤函数 :position
+谓语过滤函数 :root
+谓语过滤函数 :string
+谓语过滤函数 :string-length
+谓语过滤函数 :substring
+谓语过滤函数 :text
+谓语过滤函数 :toDouble
+谓语过滤函数 :toInt
+谓语过滤函数 :true
+谓语过滤函数 :try
+谓语过滤函数 :upper-case
+抽取函数 :allText
+抽取函数 :@
+抽取函数 :html
+抽取函数 :node
+抽取函数 :num
+抽取函数 :outerHtml
+抽取函数 :self
+抽取函数 :tag
+抽取函数 :text
+```
+#### 轴函数
+轴函数是定义节点塞选域的函数,在一个xpath表达式节点中,轴是可选的。但是如果存在轴,那么他的作用则是根据当前的节点集产生新的一片候选节点集。
+SipSoup的轴和标准Xpath的轴保持兼容,但是也有一个地方不一样,就是SipSoup的轴允许带有参数,轴参数目前只支持字符串,可以支持多个字符串的参数。
+
+轴函数列表
+|函数名称|参数|作用|
+|---|---|
+|ancestor|无|全部祖先节点 父亲，爷爷 ， 爷爷的父亲...|
+|ancestorOrSelf|无|全部祖先节点和自身节点|
+|cacheCss|css query表达式|内部实现路由至Jsoup的select,和css轴不一样的是,cacheCss会对css规则进行缓存,在遇到大量同类型网页的解析的时候,可能一个css规则被多次使用,缓存css能够减少css规则编译的消耗,提升性能|
+|child|无|直接子节点|
+|css|css query表达式|内部实现路由至Jsoup的select|
+|descendant|无|全部子代节点 儿子，孙子，孙子的儿子...|
+|descendantOrSelf|无|全部子代节点和自身|
+|following-sibling|无|节点后面的全部同胞节点following-sibling|
+|following-sibling-one|无|返回下一个同胞节点(扩展) 语法 following-sibling-one|
+|parent|无|父节点|
+|preceding-sibling|无|节点前面的全部同胞节点，preceding-sibling|
+|preceding-sibling-one|无|返回前一个同胞节点（扩展），语法 preceding-sibling-one|
+|self|无|自身|
+|sibling|无|全部同胞（扩展）|
+
+#### 抽取函数
+抽取函数用来对结果集进行转换,他是一些简单的数据抽取函数,如提取所有文本,提取某个属性等等,抽取函数目前不对太多。抽取结果可能为元素,也能为字符串。请注意,如果xpath节点中,存在抽取函数,而且抽取函数返回类型为字符串,那么这个函数应该是这个xpath节点链的末尾节点。因为每个抽取节点开始的时候,将会执行过滤,只会将element作为下一轮抽取的输入。
+
+轴函数列表
+|函数名称|参数|作用|
+|---|---|
+|allText|无|递归获取节点内全部的纯文本,将block的html元素转化为换行符,能够保持原有的html的段落结构,但是不能保持布局结构|
+|@|无|抽取当前节点的某个属性,数据内部函数,外界不可直接调用,原有是函数语法识别器不会识别@函数,但是@操作符本身内部是转化抽取函数了|
+|html|无|获取全部节点的内部的html|
+|node|无|获取全部节点的html|
+|num|无|抽取节点自有文本中全部数字|
+|outerHtml|无|获取全部节点的 包含节点本身在内的全部html|
+|self|无|放弃抽取,保留自身。xpath默认会对当前节点的子节点进行操作,而有些时候轴函数定位到的节点就是需要的数据了,所以不需要在使用抽取函数计算新节点了,主要用在tag函数不能解决的场景下|
+|tag|tagName|内部函数,xpath 语法中的tag字段,默认路由到此函数处理``//div\[@class\]`` 这里的div在运行时会转化为 ``//tag('div')\[@'class'\]``这两个表达式等价,但是第一个表达式才是xpath常规思路,而且对SipSoup这两个表达式性能完全一样 |
+|text|无|只获取节点自身的子文本|
+
+### 过滤函数
+过滤函数用在谓语中,过滤函数非常强大,

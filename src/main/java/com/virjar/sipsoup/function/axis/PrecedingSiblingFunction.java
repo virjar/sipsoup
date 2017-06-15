@@ -25,6 +25,6 @@ public class PrecedingSiblingFunction implements AxisFunction {
 
     @Override
     public String getName() {
-        return "precedingSibling";
+        return "preceding-sibling";
     }
 }

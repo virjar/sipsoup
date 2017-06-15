@@ -23,6 +23,6 @@ public class PrecedingSiblingOneFunction implements AxisFunction {
 
     @Override
     public String getName() {
-        return "precedingSiblingOne";
+        return "preceding-sibling-one";
     }
 }
