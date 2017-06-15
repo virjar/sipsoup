@@ -56,10 +56,11 @@ demo如下:
    <ul></ul>
   </ul>
 ```
-这个文本,需要提取所有偶数行的a标签的图片的链接信息
-对应xpath表达式可以这么写 ``//css('.ad-thumb-list .inner')::a[position(parent(2)) %2 =0]/@href``
+这个文本,需要提取所有偶数行的a标签的图片的链接信息,对应xpath表达式可以这么写
+
+``//css('.ad-thumb-list .inner')::a[position(parent(2)) %2 =0]/@href``
 语法解释
-1. ``css('.ad-thumb-list .inner')::`` 这是css轴的运用,这个表达式定位到了所有的图片数据(其中"<a href="www.java1234.com/test.jpg">这是一个混淆的图片数据</a>"将会被过滤)
+1. ``css('.ad-thumb-list .inner')::`` 这是css轴的运用,这个表达式定位到了所有的图片数据(其中"\<a href="www.java1234.com/test.jpg"\>这是一个混淆的图片数据</a>"将会被过滤)
 2. ``a[position(parent(2)) %2 =0]`` 这是复杂谓语的一个简单应用,首先a\[xxx\]定位到a标签,然后使用parent函数得到他的爷爷节点,(parent函数可以带参数,必须是一个数字,2代表父亲的父亲,也就是得到了li标签)
 3. 然后使用position函数得到这个li元素的position偏移,也就是他是第几个li。
 4. 最后,让他和2取模,如果结果为0,代表他就是偶数资源
