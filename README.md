@@ -83,32 +83,32 @@ demo如下:
 轴函数 :precedingSiblingOne
 轴函数 :self
 轴函数 :sibling
-|abs
-|allText
-|boolean
-|concat
-|contains
-|false
-|first
-|hasClass
-|last
-|lower-case
-|matches
-|name
-|not
-|nullToDefault
-|parent
-|position
-|root
-|string
-|string-length
-|substring
-|text
-|toDouble
-|toInt
-|true
-|try
-|upper-case
+谓语过滤函数 :|abs
+谓语过滤函数 :|allText
+谓语过滤函数 :|boolean
+谓语过滤函数 :|concat
+谓语过滤函数 :|contains
+谓语过滤函数 :|false
+谓语过滤函数 :|first
+谓语过滤函数 :|hasClass
+谓语过滤函数 :|last
+谓语过滤函数 :|lower-case
+谓语过滤函数 :|matches
+谓语过滤函数 :|name
+谓语过滤函数 :|not
+谓语过滤函数 :|nullToDefault
+谓语过滤函数 :|parent
+谓语过滤函数 :|position
+谓语过滤函数 :|root
+谓语过滤函数 :|string
+谓语过滤函数 :|string-length
+谓语过滤函数 :|substring
+谓语过滤函数 :|text
+谓语过滤函数 :|toDouble
+谓语过滤函数 :|toInt
+谓语过滤函数 :|true
+谓语过滤函数 :|try
+谓语过滤函数 :|upper-case
 抽取函数 :allText
 抽取函数 :@
 抽取函数 :html
