@@ -14,7 +14,7 @@ public class ContainsFunction implements FilterFunction {
     @Override
     public Object call(Element element, List<SyntaxNode> params) {
         Preconditions.checkArgument(params.size() >= 2, "contains need 2 params");
-        return params.get(0).calc(element).toString().contains(params.get(1).toString());
+        return params.get(0).calc(element).toString().contains(params.get(1).calc(element).toString());
     }
 
     @Override
