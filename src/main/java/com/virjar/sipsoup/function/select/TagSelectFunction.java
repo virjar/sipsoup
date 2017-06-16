@@ -38,8 +38,10 @@ public class TagSelectFunction implements SelectFunction {
                 // temp.addAll(elements);
             } else {
                 for (Element element : elements) {
-                    if (StringUtils.equals(element.tagName(), tagName)) {
-                        temp.add(element);
+                    for (Element child : element.children()) {
+                        if (StringUtils.equals(child.tagName(), tagName)) {
+                            temp.add(child);
+                        }
                     }
                 }
             }
