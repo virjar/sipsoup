@@ -17,7 +17,7 @@ import com.virjar.sipsoup.parse.expression.SyntaxNode;
 public class NullToDefaultFunction implements FilterFunction {
     @Override
     public Object call(Element element, List<SyntaxNode> params) {
-        Preconditions.checkArgument(params.size() > 2, getName() + " must have 2 parameter");
+        Preconditions.checkArgument(params.size() >= 2, getName() + " must have 2 parameter");
         Object calc = params.get(0).calc(element);
         if (calc != null) {
             return calc;
