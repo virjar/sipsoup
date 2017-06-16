@@ -185,6 +185,9 @@ public abstract class XpathEvaluator {
         public List<SIPNode> evaluate(List<SIPNode> elements) {
             for (XpathNode xpathNode : xpathNodeList) {// 对xpath语法树上面每个节点进行抽取
                 elements = handleNode(elements, xpathNode);
+                if (elements.isEmpty()) {//如果已经为空,终止抽取链
+                    return elements;
+                }
             }
             return elements;
         }
