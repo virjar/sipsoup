@@ -65,6 +65,16 @@ demo如下:
 3. 然后使用position函数得到这个li元素的position偏移,也就是他是第几个li。
 4. 最后,让他和2取模,如果结果为0,代表他就是偶数资源
 
+### maven坐标
+```
+ <!-- xpath -->
+ <dependency>
+      <groupId>com.virjar</groupId>
+      <artifactId>sipsoup</artifactId>
+      <version>RELEASE</version>
+</dependency>
+```
+
 ## 具体文档
 ### 函数
 所有支持的函数,可以通过如下demo得到 [解析函数的demo](http://git.oschina.net/virjar/sipsoup/blob/master/src/test/java/com/virjar/sipsoup/FunctionListTest.java)
