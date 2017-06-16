@@ -3,21 +3,24 @@ package com.virjar.sipsoup.function.select;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Element;
 
 import com.virjar.sipsoup.model.SIPNode;
 
 /**
- * Created by virjar on 17/6/11.
+ * Created by virjar on 17/6/16.
  */
-public class AttrFunction extends AttrBaseFunction {
+public class AbsUrlFunction extends AttrBaseFunction {
 
     @Override
     public void handle(boolean allAttr, String attrKey, Element element, List<SIPNode> ret) {
         if (allAttr) {
-            ret.add(SIPNode.t(element.attributes().toString()));
+            for (Attribute attribute : element.attributes()) {
+                ret.add(SIPNode.t(element.absUrl(attribute.getKey())));
+            }
         } else {
-            String value = element.attr(attrKey);
+            String value = element.absUrl(attrKey);
             if (StringUtils.isNotBlank(value)) {
                 ret.add(SIPNode.t(value));
             }
@@ -26,6 +29,6 @@ public class AttrFunction extends AttrBaseFunction {
 
     @Override
     public String getName() {
-        return "@";
+        return "absUrl";
     }
 }
