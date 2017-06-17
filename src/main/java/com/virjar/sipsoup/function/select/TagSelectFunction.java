@@ -25,28 +25,31 @@ public class TagSelectFunction implements SelectFunction {
                 for (Element element : elements) {
                     temp.addAll(element.getAllElements());
                 }
-                // 应该是在子节点查找,本节点应该忽略
-                // temp.addAll(elements);
             } else {
                 temp.addAll(elements.select(tagName));
             }
-        } else {// 直接子代查找
-            if ("*".equals(tagName)) {
-                for (Element element : elements) {
-                    temp.addAll(element.children());
+            return Lists.transform(temp, new Function<Element, SIPNode>() {
+                @Override
+                public SIPNode apply(Element input) {
+                    return SIPNode.e(input);
                 }
-                // temp.addAll(elements);
-            } else {
-                for (Element element : elements) {
-                    for (Element child : element.children()) {
-                        if (StringUtils.equals(child.tagName(), tagName)) {
-                            temp.add(child);
-                        }
+            });
+        }
+
+        // 直接子代查找
+        if ("*".equals(tagName)) {
+            for (Element element : elements) {
+                temp.addAll(element.children());
+            }
+        } else {
+            for (Element element : elements) {
+                for (Element child : element.children()) {
+                    if (StringUtils.equals(child.tagName(), tagName)) {
+                        temp.add(child);
                     }
                 }
             }
         }
-
         return Lists.transform(temp, new Function<Element, SIPNode>() {
             @Override
             public SIPNode apply(Element input) {
