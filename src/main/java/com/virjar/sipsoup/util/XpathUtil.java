@@ -108,7 +108,7 @@ public class XpathUtil {
             return new BigDecimal(number.doubleValue());
         }
         if (number instanceof Long) {
-            return new BigDecimal(number.longValue());
+            return BigDecimal.valueOf(number.longValue());
         }
         return new BigDecimal(number.toString());
     }

@@ -95,6 +95,9 @@ public class TokenAnalysisRegistry {
 
         @Override
         public int compareTo(TokenConsumer o) {
+            if (this == o) {
+                return 0;
+            }
             return Integer.valueOf(delegate.order()).compareTo(o.order());
         }
     }

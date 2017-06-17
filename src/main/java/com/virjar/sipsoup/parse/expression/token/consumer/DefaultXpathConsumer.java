@@ -8,9 +8,12 @@ import com.virjar.sipsoup.parse.XpathParser;
 import com.virjar.sipsoup.parse.expression.token.Token;
 import com.virjar.sipsoup.parse.expression.token.TokenConsumer;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Created by virjar on 17/6/12.
  */
+@Slf4j
 public class DefaultXpathConsumer implements TokenConsumer {
     @Override
     public String consume(TokenQueue tokenQueue) {
@@ -22,6 +25,8 @@ public class DefaultXpathConsumer implements TokenConsumer {
             XpathParser.compile(s);
             return tokenQueue.consumeTo(" ");
         } catch (XpathSyntaxErrorException e) {
+            log.debug("exception when compile xpath:{}", s, e);
+            // ignore,根据约定,如果发生异常,则忽略本次调用
             return null;
         }
     }

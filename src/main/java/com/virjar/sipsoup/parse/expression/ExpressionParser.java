@@ -92,7 +92,7 @@ public class ExpressionParser {
         try {
             return innerParse();
         } catch (EmptyStackException e) {
-            throw new XpathSyntaxErrorException(0, "不能识别表达式:" + expressionTokenQueue.getQueue());
+            throw new XpathSyntaxErrorException(0, "不能识别表达式:" + expressionTokenQueue.getQueue(), e);
         }
     }
 

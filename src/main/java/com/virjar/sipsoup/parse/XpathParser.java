@@ -9,10 +9,12 @@ import com.virjar.sipsoup.exception.XpathSyntaxErrorException;
 import com.virjar.sipsoup.model.XpathEvaluator;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by virjar on 17/6/9.
  */
+@Slf4j
 public class XpathParser {
     private static volatile boolean cacheEnabled = true;
     private static LoadingCache<String, XpathEvaluateHolder> cache;
@@ -32,11 +34,17 @@ public class XpathParser {
         return new XpathParser(xpathStr).parse();
     }
 
+    /**
+     * no error代表调用放明确知道xpath没有语法错误,主动放弃检查,是一个方便的方法,但是如果表达式确实有语法错误,本方法跑出非法状态异常
+     * 
+     * @param xpathStr xpath表达式
+     * @return 由模型描述的xpath抽取器
+     */
     public static XpathEvaluator compileNoError(String xpathStr) {
         try {
             return compile(xpathStr);
         } catch (XpathSyntaxErrorException e) {
-            return new XpathEvaluator.AnanyseStartEvaluator();
+            throw new IllegalStateException(e);
         }
     }
 
@@ -73,6 +81,7 @@ public class XpathParser {
             }
             throw xpathEvaluatorOptional.getXpathSyntaxErrorException();
         } catch (ExecutionException e) {// 这个异常不会发生
+            log.error("error when compile xpath", e);
             return new XpathParser(xpathStr).parse();
         }
     }

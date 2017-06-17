@@ -5,14 +5,14 @@ package com.virjar.sipsoup.parse.expression.token;
  */
 public class Token {
 
-    public static String OPERATOR = "OPERATOR";
-    public static String CONSTANT = "CONSTANT";
-    public static String NUMBER = "NUMBER";
-    public static String EXPRESSION = "EXPRESSION";
-    public static String ATTRIBUTE_ACTION = "ATTRIBUTE_ACTION";
-    public static String XPATH = "XPATH";
-    public static String FUNCTION = "FUNCTION";
-    public static String BOOLEAN = "BOOLEAN";
+    public static final String OPERATOR = "OPERATOR";
+    public static final String CONSTANT = "CONSTANT";
+    public static final String NUMBER = "NUMBER";
+    public static final String EXPRESSION = "EXPRESSION";
+    public static final String ATTRIBUTE_ACTION = "ATTRIBUTE_ACTION";
+    public static final String XPATH = "XPATH";
+    public static final String FUNCTION = "FUNCTION";
+    public static final String BOOLEAN = "BOOLEAN";
 
     @Deprecated
     public enum TokenType {

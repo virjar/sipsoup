@@ -6,9 +6,12 @@ import org.jsoup.nodes.Element;
 
 import com.virjar.sipsoup.parse.expression.SyntaxNode;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Created by virjar on 17/6/15.
  */
+@Slf4j
 public class TryExeptionFunction implements FilterFunction {
     @Override
     public Object call(Element element, List<SyntaxNode> params) {
@@ -18,6 +21,7 @@ public class TryExeptionFunction implements FilterFunction {
         try {
             return params.get(0).calc(element);
         } catch (Exception e) {
+            log.debug("exception occur", e);
             if (params.size() > 1) {
                 return params.get(1).calc(element);
             } else {
