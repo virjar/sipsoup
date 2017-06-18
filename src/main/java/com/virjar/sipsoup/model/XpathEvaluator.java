@@ -14,6 +14,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.virjar.sipsoup.exception.FinalTypeNotSameException;
 import com.virjar.sipsoup.function.axis.AxisFunction;
+import com.virjar.sipsoup.function.select.SelectFunction;
+import com.virjar.sipsoup.function.select.SelfFunction;
+import com.virjar.sipsoup.function.select.TagSelectFunction;
 import com.virjar.sipsoup.util.XpathUtil;
 
 /**
@@ -125,6 +128,8 @@ public abstract class XpathEvaluator {
     }
 
     public static class ChainEvaluator extends XpathEvaluator {
+        // @Getter
+        // for xsoup
         private LinkedList<XpathNode> xpathNodeList = Lists.newLinkedList();
 
         public ChainEvaluator(LinkedList<XpathNode> xpathNodeList) {
@@ -185,7 +190,7 @@ public abstract class XpathEvaluator {
         public List<SIPNode> evaluate(List<SIPNode> elements) {
             for (XpathNode xpathNode : xpathNodeList) {// 对xpath语法树上面每个节点进行抽取
                 elements = handleNode(elements, xpathNode);
-                if (elements.isEmpty()) {//如果已经为空,终止抽取链
+                if (elements.isEmpty()) {// 如果已经为空,终止抽取链
                     return elements;
                 }
             }
@@ -194,10 +199,13 @@ public abstract class XpathEvaluator {
 
         @Override
         public SIPNode.NodeType judeNodeType() throws FinalTypeNotSameException {
-            // Predicate predicate = xpathNodeList.getLast().getPredicate();
-            // return null;// TODO 优化谓语结构后实现
-            // return xpathNodeList.getLast().getTagName()
-            return null;
+            // TODO 这里需要优化
+            SelectFunction selectFunction = xpathNodeList.getLast().getSelectFunction();
+            if (selectFunction instanceof SelfFunction || selectFunction instanceof TagSelectFunction) {
+                return SIPNode.NodeType.NODE;
+            } else {
+                return SIPNode.NodeType.TEXT;
+            }
         }
     }
 

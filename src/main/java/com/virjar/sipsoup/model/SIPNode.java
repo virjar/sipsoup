@@ -18,7 +18,7 @@ import org.jsoup.nodes.Element;
  */
 public class SIPNode {
     public enum NodeType {
-        NODE, TEST
+        NODE, TEXT
     }
 
     private Element element;
