@@ -77,6 +77,10 @@ demo如下:
 </dependency>
 ```
 
+### 桥接器
+考虑国内很多同学使用webMagic,webMagic内置的xpath是XSoup,如果想再WebMagic中使用SipSoup,那也是很容易实现的,SipSoup提供了到XSoup的桥接器。几行配置即可实现SipSoup到XSoup的替换
+参见项目[xsoup-to-sipsoup](http://git.oschina.net/virjar/xsoup-to-sipsoup)
+
 ## 具体文档
 ### 函数
 所有支持的函数,可以通过如下demo得到 [解析函数的demo](http://git.oschina.net/virjar/sipsoup/blob/master/src/test/java/com/virjar/sipsoup/FunctionListTest.java)
