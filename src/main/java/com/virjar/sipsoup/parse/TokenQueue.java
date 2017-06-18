@@ -17,10 +17,10 @@ import lombok.Getter;
  */
 public class TokenQueue {
     @Getter
-    private String queue;
-    private int pos = 0;
+    protected String queue;
+    protected int pos = 0;
 
-    private static final char ESC = '\\'; // escape char for chomp balanced.转义字符
+    protected static final char ESC = '\\'; // escape char for chomp balanced.转义字符
 
     /**
      * Create a new TokenQueue.
