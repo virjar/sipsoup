@@ -4,6 +4,7 @@ package com.virjar.sipsoup.parse;
  * Created by virjar on 17/6/9.
  */
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.helper.StringUtil;
 import org.jsoup.helper.Validate;
 
@@ -390,7 +391,13 @@ public class TokenQueue {
                 end = pos; // don't include the outer match pair in the return
             last = c;
         } while (depth > 0);
-        return (end >= 0) ? queue.substring(start, end) : "";
+        // 允许为空结果
+        if (start == end) {
+            return "";
+        }
+
+        // 如匹配失败,返回null
+        return (end >= 0) ? queue.substring(start, end) : null;
     }
 
     /**
@@ -532,7 +539,26 @@ public class TokenQueue {
         }
         for (int i = pos; i < end - 1; i++) {
             if (queue.charAt(i) == ':' && queue.charAt(i + 1) == ':') {
-                return true;
+                String axisStr = queue.substring(pos, i);
+                TokenQueue axisTokenQueue = new TokenQueue(axisStr);
+                String axisName = axisTokenQueue.consumeIdentify();
+                if (StringUtils.isEmpty(axisName)) {
+                    return false;
+                }
+                axisTokenQueue.consumeWhitespace();
+                if (axisTokenQueue.isEmpty()) {
+                    return true;// 无参轴
+                }
+                if (axisTokenQueue.matches("(")) {
+                    String functionParams = axisTokenQueue.chompBalanced('(', ')');
+                    if (functionParams == null) {
+                        return false;// 格式不合法
+                    }
+                    axisTokenQueue.consumeWhitespace();
+                    // 含参轴
+                    return axisTokenQueue.isEmpty();
+                }
+                return false;
             }
         }
         return false;

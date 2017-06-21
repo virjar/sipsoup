@@ -44,7 +44,7 @@ public class XpathParser {
         try {
             return compile(xpathStr);
         } catch (XpathSyntaxErrorException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException("parse xpath \"" + xpathStr + "\" failed", e);
         }
     }
 
