@@ -133,7 +133,7 @@ public class XpathStateMachine {
                 String axisFunctionStr = stateMachine.tokenQueue.consumeTo("::");
                 stateMachine.tokenQueue.consume("::");
                 TokenQueue functionTokenQueue = new TokenQueue(axisFunctionStr);
-                String functionName = functionTokenQueue.consumeIdentify().trim();
+                String functionName = functionTokenQueue.consumeCssIdentifier().trim();
                 functionTokenQueue.consumeWhitespace();
 
                 AxisFunction axisFunction = FunctionEnv.getAxisFunction(functionName);
