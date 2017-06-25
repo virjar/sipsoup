@@ -140,7 +140,7 @@ public abstract class XpathEvaluator {
 
             // 目前只支持对element元素进行抽取,如果中途抽取到了文本,则会断节
             List<Element> elements = Lists.newLinkedList(
-                    Sets.newHashSet(Iterables.transform(Iterables.filter(input, new Predicate<SIPNode>() {
+                    Sets.newLinkedHashSet(Iterables.transform(Iterables.filter(input, new Predicate<SIPNode>() {
                         @Override
                         public boolean apply(SIPNode input) {
                             return !input.isText();
