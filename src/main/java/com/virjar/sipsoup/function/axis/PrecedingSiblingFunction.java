@@ -1,9 +1,12 @@
 package com.virjar.sipsoup.function.axis;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import com.google.common.collect.Lists;
 
 /**
  * Created by virjar on 17/6/6.
@@ -14,13 +17,13 @@ import org.jsoup.select.Elements;
 public class PrecedingSiblingFunction implements AxisFunction {
     @Override
     public Elements call(Element e, List<String> args) {
-        Elements rs = new Elements();
         Element tmp = e.previousElementSibling();
+        LinkedList<Element> tempList = Lists.newLinkedList();
         while (tmp != null) {
-            rs.add(tmp);
+            tempList.addFirst(tmp);
             tmp = tmp.previousElementSibling();
         }
-        return rs;
+        return new Elements(tempList);
     }
 
     @Override
