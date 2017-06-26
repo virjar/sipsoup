@@ -12,7 +12,7 @@ import com.virjar.sipsoup.parse.expression.SyntaxNode;
 public class StringLengthFunction extends AbStractStringFunction {
     @Override
     public Object call(Element element, List<SyntaxNode> params) {
-        return firstParamToString(element, params);
+        return firstParamToString(element, params).length();
     }
 
     @Override
