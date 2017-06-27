@@ -34,7 +34,7 @@ public class XpathStateMachine {
     }
 
     // 注意顺序,这顺序不能乱
-    private static List<String> scopeList = Lists.newArrayList("//", "/", ".//", "/");
+    private static List<String> scopeList = Lists.newArrayList("//", "/", ".//", "./");
 
     @Getter
     private BuilderState state = BuilderState.SCOPE;
