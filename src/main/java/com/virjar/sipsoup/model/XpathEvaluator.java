@@ -39,19 +39,19 @@ public abstract class XpathEvaluator {
     }
 
     public List<String> evaluateToString(List<SIPNode> SIPNodes) {
-        return transformToString(evaluate(SIPNodes));
+        return XpathUtil.transformToString(evaluate(SIPNodes));
     }
 
     public List<String> evaluateToString(Element element) {
-        return transformToString(evaluate(element));
+        return XpathUtil.transformToString(evaluate(element));
     }
 
     public List<Element> evaluateToElement(List<SIPNode> SIPNodes) {
-        return transformToElement(evaluate(SIPNodes));
+        return XpathUtil.transformToElement(evaluate(SIPNodes));
     }
 
     public List<Element> evaluateToElement(Element element) {
-        return transformToElement(evaluate(element));
+        return XpathUtil.transformToElement(evaluate(element));
     }
 
     public Elements evaluateToElements(List<SIPNode> nodeLists) {
@@ -68,34 +68,6 @@ public abstract class XpathEvaluator {
             return null;
         }
         return strings.get(0);
-    }
-
-    public static List<Element> transformToElement(List<SIPNode> SIPNodes) {
-        return Lists.newLinkedList(Iterables.transform(Iterables.filter(SIPNodes, new Predicate<SIPNode>() {
-            @Override
-            public boolean apply(SIPNode input) {
-                return input.getElement() != null;
-            }
-        }), new Function<SIPNode, Element>() {
-            @Override
-            public Element apply(SIPNode input) {
-                return input.getElement();
-            }
-        }));
-    }
-
-    public static List<String> transformToString(List<SIPNode> SIPNodes) {
-        return Lists.newLinkedList(Iterables.transform(Iterables.filter(SIPNodes, new Predicate<SIPNode>() {
-            @Override
-            public boolean apply(SIPNode input) {
-                return input.isText();
-            }
-        }), new Function<SIPNode, String>() {
-            @Override
-            public String apply(SIPNode input) {
-                return input.getTextVal();
-            }
-        }));
     }
 
     /**

@@ -16,6 +16,10 @@ import java.util.List;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.virjar.sipsoup.exception.EvaluateException;
 import com.virjar.sipsoup.exception.FinalTypeNotSameException;
 import com.virjar.sipsoup.model.SIPNode;
@@ -125,5 +129,33 @@ public class XpathUtil {
             }
         }
         return null;
+    }
+
+    public static List<Element> transformToElement(List<SIPNode> SIPNodes) {
+        return Lists.newLinkedList(Iterables.transform(Iterables.filter(SIPNodes, new Predicate<SIPNode>() {
+            @Override
+            public boolean apply(SIPNode input) {
+                return input.getElement() != null;
+            }
+        }), new Function<SIPNode, Element>() {
+            @Override
+            public Element apply(SIPNode input) {
+                return input.getElement();
+            }
+        }));
+    }
+
+    public static List<String> transformToString(List<SIPNode> SIPNodes) {
+        return Lists.newLinkedList(Iterables.transform(Iterables.filter(SIPNodes, new Predicate<SIPNode>() {
+            @Override
+            public boolean apply(SIPNode input) {
+                return input.isText();
+            }
+        }), new Function<SIPNode, String>() {
+            @Override
+            public String apply(SIPNode input) {
+                return input.getTextVal();
+            }
+        }));
     }
 }
