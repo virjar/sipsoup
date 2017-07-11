@@ -208,7 +208,7 @@ public class TokenQueue {
     public String consumeFunction() {
         String functionName = consumeTo("(");
         String params = chompBalanced('(', ')');
-        return functionName + "(" + params + ")";
+        return functionName + "(" + (params == null ? "" : params) + ")";
     }
 
     /**
@@ -541,7 +541,7 @@ public class TokenQueue {
             if (queue.charAt(i) == ':' && queue.charAt(i + 1) == ':') {
                 String axisStr = queue.substring(pos, i);
                 TokenQueue axisTokenQueue = new TokenQueue(axisStr);
-                //轴允许字母,-,_
+                // 轴允许字母,-,_
                 String axisName = axisTokenQueue.consumeCssIdentifier();
                 if (StringUtils.isEmpty(axisName)) {
                     return false;
