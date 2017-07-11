@@ -153,7 +153,7 @@ public class XpathStateMachine {
                     throw new XpathSyntaxErrorException(stateMachine.tokenQueue.nowPosition(),
                             "expression is not a function:\"" + axisFunctionStr + "\"");
                 }
-                String paramList = functionTokenQueue.chompBalanced('(', ')');
+                String paramList = StringUtils.trimToEmpty(functionTokenQueue.chompBalanced('(', ')'));
                 functionTokenQueue.consumeWhitespace();
                 if (!functionTokenQueue.isEmpty()) {
                     throw new XpathSyntaxErrorException(stateMachine.tokenQueue.nowPosition(),
@@ -187,7 +187,7 @@ public class XpathStateMachine {
                             continue;
                         }
                     }
-                    params.add(TokenQueue.unescape(param));
+                    params.add(TokenQueue.unescape(StringUtils.trimToEmpty(param)));
                 }
                 stateMachine.xpathChain.getXpathNodeList().getLast().setAxisParams(params);
                 stateMachine.state = TAG;
@@ -212,7 +212,7 @@ public class XpathStateMachine {
                     TokenQueue functionTokenQueue = new TokenQueue(function);
                     String functionName = functionTokenQueue.consumeTo("(");
                     LinkedList<String> params = Lists.newLinkedList();
-                    TokenQueue paramTokenQueue = new TokenQueue(functionTokenQueue.chompBalanced('(', ')'));
+                    TokenQueue paramTokenQueue = new TokenQueue(StringUtils.trimToEmpty(functionTokenQueue.chompBalanced('(', ')')));
                     while ((paramTokenQueue.consumeWhitespace() && !paramTokenQueue.consumeWhitespace())
                             || !paramTokenQueue.isEmpty()) {
                         String param;
@@ -229,7 +229,7 @@ public class XpathStateMachine {
                         } else {
                             param = paramTokenQueue.consumeTo(",");
                         }
-                        params.add(TokenQueue.unescape(param));
+                        params.add(TokenQueue.unescape(StringUtils.trimToEmpty(param)));
                     }
                     stateMachine.xpathChain.getXpathNodeList().getLast()
                             .setSelectFunction(FunctionEnv.getSelectFunction(functionName));
@@ -277,7 +277,7 @@ public class XpathStateMachine {
                     String predicate = stateMachine.tokenQueue.chompBalanced('[', ']');
                     SyntaxNode predicateTree = new ExpressionParser(new TokenQueue(predicate)).parse();
                     stateMachine.xpathChain.getXpathNodeList().getLast()
-                            .setPredicate(new Predicate(predicate, predicateTree));
+                            .setPredicate(new Predicate(StringUtils.trimToEmpty(predicate), predicateTree));
                 }
                 // check
                 stateMachine.tokenQueue.consumeWhitespace();

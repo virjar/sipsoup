@@ -12,6 +12,7 @@ import com.virjar.sipsoup.parse.expression.node.FunctionNode;
 import com.virjar.sipsoup.parse.expression.token.Token;
 import com.virjar.sipsoup.parse.expression.token.TokenAnalysisRegistry;
 import com.virjar.sipsoup.parse.expression.token.TokenConsumer;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by virjar on 17/6/11. 对于函数,解析函数名字,参数列表,决定参数类型
@@ -39,7 +40,7 @@ public class FunctionParser {
 
         List<SyntaxNode> paramList = Lists.newLinkedList();
 
-        TokenQueue paramTokenQueue = new TokenQueue(params);
+        TokenQueue paramTokenQueue = new TokenQueue(StringUtils.trimToEmpty(params));
         while ((paramTokenQueue.consumeWhitespace() && !paramTokenQueue.consumeWhitespace())
                 || !paramTokenQueue.isEmpty()) {
 

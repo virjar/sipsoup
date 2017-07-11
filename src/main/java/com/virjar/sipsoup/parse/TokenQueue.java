@@ -208,7 +208,7 @@ public class TokenQueue {
     public String consumeFunction() {
         String functionName = consumeTo("(");
         String params = chompBalanced('(', ')');
-        return functionName + "(" + (params == null ? "" : params) + ")";
+        return functionName + "(" + StringUtils.trimToEmpty(params) + ")";
     }
 
     /**
