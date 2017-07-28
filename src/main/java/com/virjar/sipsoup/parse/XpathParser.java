@@ -1,5 +1,7 @@
 package com.virjar.sipsoup.parse;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 
 import com.google.common.cache.CacheBuilder;
@@ -16,8 +18,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class XpathParser {
-    private static volatile boolean cacheEnabled = true;
-    private static LoadingCache<String, XpathEvaluateHolder> cache;
+    //抄的fastJson,默认1024个模型自动缓存
+    private static final int  CACHE_SIZE = 1024;
+    private static ConcurrentMap<String, XpathEvaluator> cache  = new ConcurrentHashMap<>(128, 0.75f, 1);
+
     @Getter
     private String xpathStr;
     private TokenQueue tokenQueue;
@@ -25,13 +29,6 @@ public class XpathParser {
     public XpathParser(String xpathStr) {
         this.xpathStr = xpathStr;
         tokenQueue = new TokenQueue(xpathStr);
-    }
-
-    public static XpathEvaluator compile(String xpathStr) throws XpathSyntaxErrorException {
-        if (cacheEnabled) {
-            return fromCache(xpathStr);
-        }
-        return new XpathParser(xpathStr).parse();
     }
 
     /**
@@ -56,64 +53,19 @@ public class XpathParser {
         return xpathStateMachine.getEvaluator();
     }
 
-    private static XpathEvaluator fromCache(String xpathStr) throws XpathSyntaxErrorException {
-        if (cache == null) {
-            synchronized (XpathParser.class) {
-                if (cache == null) {
-                    cache = CacheBuilder.newBuilder().build(new CacheLoader<String, XpathEvaluateHolder>() {
-                        @Override
-                        public XpathEvaluateHolder load(String key) throws Exception {
-                            try {
-                                return XpathEvaluateHolder.from(new XpathParser(key).parse());
-                            } catch (XpathSyntaxErrorException e) {
-                                return XpathEvaluateHolder.e(e);
-                            }
-                        }
-                    });
-                }
+    private static XpathEvaluator compile(String xpathStr) throws XpathSyntaxErrorException {
+        if (xpathStr == null) {
+            throw new XpathSyntaxErrorException(0,"xpathStr can not be null");
+        }
+        XpathEvaluator xpathEvaluator = cache.get(xpathStr);
+        if(xpathEvaluator == null){
+            xpathEvaluator = new XpathParser(xpathStr).parse();
+            if (cache.size() < CACHE_SIZE) {
+                cache.putIfAbsent(xpathStr, xpathEvaluator);
+                xpathEvaluator = cache.get(xpathStr);
             }
         }
-
-        try {
-            XpathEvaluateHolder xpathEvaluatorOptional = cache.get(xpathStr);
-            if (xpathEvaluatorOptional.getXpathEvaluator() != null) {
-                return xpathEvaluatorOptional.getXpathEvaluator();
-            }
-            throw xpathEvaluatorOptional.getXpathSyntaxErrorException();
-        } catch (ExecutionException e) {// 这个异常不会发生
-            log.error("error when compile xpath", e);
-            return new XpathParser(xpathStr).parse();
-        }
+       return xpathEvaluator;
     }
 
-    /**
-     * 开启cache,可能两个结果,要么成功编译xpath语法树,要么xpath不合法报错 ,所以错误信息也需要缓存,否则错误会因为不能命中缓存而多次触发缓存建立逻辑,这个思路从optional改造而来
-     */
-    private static class XpathEvaluateHolder {
-        @Getter
-        private XpathEvaluator xpathEvaluator;
-        @Getter
-        private XpathSyntaxErrorException xpathSyntaxErrorException;
-
-        static XpathEvaluateHolder e(XpathSyntaxErrorException xpathSyntaxErrorException) {
-            return new XpathEvaluateHolder(null, xpathSyntaxErrorException);
-        }
-
-        static XpathEvaluateHolder from(XpathEvaluator xpathEvaluator) {
-            return new XpathEvaluateHolder(xpathEvaluator, null);
-        }
-
-        private XpathEvaluateHolder(XpathEvaluator xpathEvaluator,
-                XpathSyntaxErrorException xpathSyntaxErrorException) {
-            this.xpathEvaluator = xpathEvaluator;
-            this.xpathSyntaxErrorException = xpathSyntaxErrorException;
-        }
-    }
-
-    public static void setCacheEnabled(boolean cacheEnabled) {
-        XpathParser.cacheEnabled = cacheEnabled;
-        if (!cacheEnabled && cache != null) {
-            cache.invalidateAll();
-        }
-    }
 }
