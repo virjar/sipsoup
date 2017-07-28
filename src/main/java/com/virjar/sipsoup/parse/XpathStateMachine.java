@@ -65,6 +65,9 @@ public class XpathStateMachine {
                     } else {
                         subXpath = stateMachine.tokenQueue.chompBalanced('(', ')');
                     }
+                    if(StringUtils.isBlank(subXpath)){
+                        throw new XpathSyntaxErrorException(0,"\"()\" empty sub xpath fond");
+                    }
                     // subXpath = TokenQueue.unescape(subXpath);
                     // TODO 考虑是否抹掉转义
                     XpathEvaluator subTree = new XpathParser(subXpath).parse();
