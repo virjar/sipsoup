@@ -21,7 +21,7 @@ public class XpathHandler implements TokenHandler {
         return new SyntaxNode() {
             @Override
             public Object calc(Element element) {
-                return xpathEvaluator.evaluate(Lists.newArrayList(SIPNode.e(element)));
+                return xpathEvaluator.evaluate(element);
             }
 
             @Override

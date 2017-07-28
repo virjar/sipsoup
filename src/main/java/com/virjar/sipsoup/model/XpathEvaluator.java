@@ -23,22 +23,26 @@ import com.virjar.sipsoup.util.XpathUtil;
  * Created by virjar on 17/6/9.
  */
 public abstract class XpathEvaluator {
-    public abstract List<SIPNode> evaluate(List<SIPNode> elements);
+    public abstract SipNodes evaluate(SipNodes elements);
 
-    public List<SIPNode> evaluate(Elements elements) {
-        return evaluate(Lists.transform(elements, new Function<Element, SIPNode>() {
+    public SipNodes evaluate(Elements elements) {
+        return evaluate(new SipNodes( Lists.transform(elements, new Function<Element, SIPNode>() {
             @Override
             public SIPNode apply(Element input) {
                 return SIPNode.e(input);
             }
-        }));
+        })));
     }
 
-    public List<SIPNode> evaluate(Element element) {
+    public SipNodes evaluate(SIPNode sipNode){
+        return evaluate(new SipNodes(sipNode));
+    }
+
+    public SipNodes evaluate(Element element) {
         return evaluate(new Elements(element));
     }
 
-    public List<String> evaluateToString(List<SIPNode> SIPNodes) {
+    public List<String> evaluateToString(SipNodes SIPNodes) {
         return XpathUtil.transformToString(evaluate(SIPNodes));
     }
 
@@ -46,7 +50,7 @@ public abstract class XpathEvaluator {
         return XpathUtil.transformToString(evaluate(element));
     }
 
-    public List<Element> evaluateToElement(List<SIPNode> SIPNodes) {
+    public List<Element> evaluateToElement(SipNodes SIPNodes) {
         return XpathUtil.transformToElement(evaluate(SIPNodes));
     }
 
@@ -54,7 +58,7 @@ public abstract class XpathEvaluator {
         return XpathUtil.transformToElement(evaluate(element));
     }
 
-    public Elements evaluateToElements(List<SIPNode> nodeLists) {
+    public Elements evaluateToElements(SipNodes nodeLists) {
         return new Elements(evaluateToElement(nodeLists));
     }
 
@@ -84,7 +88,7 @@ public abstract class XpathEvaluator {
     public static class AnanyseStartEvaluator extends XpathEvaluator {
 
         @Override
-        public List<SIPNode> evaluate(List<SIPNode> elements) {
+        public SipNodes evaluate(SipNodes elements) {
             throw new UnsupportedOperationException();
         }
 
@@ -159,9 +163,9 @@ public abstract class XpathEvaluator {
         }
 
         @Override
-        public List<SIPNode> evaluate(List<SIPNode> elements) {
+        public SipNodes evaluate(SipNodes elements) {
             for (XpathNode xpathNode : xpathNodeList) {// 对xpath语法树上面每个节点进行抽取
-                elements = handleNode(elements, xpathNode);
+                elements = new SipNodes(handleNode(elements, xpathNode));
                 if (elements.isEmpty()) {// 如果已经为空,终止抽取链
                     return elements;
                 }
@@ -188,9 +192,9 @@ public abstract class XpathEvaluator {
         }
 
         @Override
-        public List<SIPNode> evaluate(List<SIPNode> elements) {
+        public SipNodes evaluate(SipNodes elements) {
             Iterator<XpathEvaluator> iterator = subEvaluators.iterator();
-            List<SIPNode> evaluate = iterator.next().evaluate(elements);
+            SipNodes evaluate = iterator.next().evaluate(elements);
             while (iterator.hasNext()) {
                 evaluate.addAll(iterator.next().evaluate(elements));
             }
@@ -218,9 +222,9 @@ public abstract class XpathEvaluator {
         }
 
         @Override
-        public List<SIPNode> evaluate(List<SIPNode> elements) {
+        public SipNodes evaluate(SipNodes elements) {
             Iterator<XpathEvaluator> iterator = subEvaluators.iterator();
-            List<SIPNode> evaluate = iterator.next().evaluate(elements);
+            SipNodes evaluate = iterator.next().evaluate(elements);
             while (iterator.hasNext()) {
                 evaluate.retainAll(iterator.next().evaluate(elements));
             }

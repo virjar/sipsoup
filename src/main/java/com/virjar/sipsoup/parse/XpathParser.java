@@ -53,7 +53,7 @@ public class XpathParser {
         return xpathStateMachine.getEvaluator();
     }
 
-    private static XpathEvaluator compile(String xpathStr) throws XpathSyntaxErrorException {
+    public static XpathEvaluator compile(String xpathStr) throws XpathSyntaxErrorException {
         if (xpathStr == null) {
             throw new XpathSyntaxErrorException(0,"xpathStr can not be null");
         }
