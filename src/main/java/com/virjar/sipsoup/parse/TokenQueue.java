@@ -567,8 +567,6 @@ public class TokenQueue {
 
     /**
      * 下一个"\"的位置,如果没有,则返回空,考虑转义和字符串文本
-     * 
-     * @return
      */
     private int nextXpathNodeSeperator() {
         int start = pos;

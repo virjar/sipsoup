@@ -26,8 +26,8 @@ public class XpathUtil {
     /**
      * 获取同名元素在同胞中的index
      * 
-     * @param e
-     * @return
+     * @param e 元素
+     * @return 位置
      */
     public static int getElIndexInSameTags(Element e) {
         Elements chs = e.parent().children();
@@ -47,8 +47,8 @@ public class XpathUtil {
     /**
      * 获取同胞中同名元素的数量
      * 
-     * @param e
-     * @return
+     * @param e 元素
+     * @return 数量
      */
     public static int sameTagElNums(Element e) {
         Elements els = e.parent().getElementsByTag(e.tagName());

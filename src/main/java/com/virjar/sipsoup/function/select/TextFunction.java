@@ -15,9 +15,7 @@ import com.virjar.sipsoup.model.XpathNode;
 public class TextFunction implements SelectFunction {
     /**
      * 只获取节点自身的子文本
-     * 
-     * @param elements
-     * @return
+     *
      */
     @Override
     public List<SIPNode> call(XpathNode.ScopeEm scopeEm, Elements elements, List<String> args) {
