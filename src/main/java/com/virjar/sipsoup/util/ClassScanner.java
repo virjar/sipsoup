@@ -135,15 +135,11 @@ public class ClassScanner {
 
         @Override
         public void visit(Class clazz) {
-            try {
-                Method[] methods = clazz.getDeclaredMethods();
-                for (Method method : methods) {
-                    if (method.getAnnotation(annotationClazz) != null) {
-                        methodSet.add(method);
-                    }
+            Method[] methods = clazz.getDeclaredMethods();
+            for (Method method : methods) {
+                if (method.getAnnotation(annotationClazz) != null) {
+                    methodSet.add(method);
                 }
-            } catch (Throwable e) {
-                // do nothing 可能有classNotFoundException
             }
         }
 
