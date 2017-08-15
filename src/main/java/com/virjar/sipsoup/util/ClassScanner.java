@@ -14,6 +14,7 @@ import java.util.jar.JarFile;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import com.virjar.sipsoup.function.filter.AbsFunction;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -111,12 +112,8 @@ public class ClassScanner {
 
         @Override
         public void visit(Class clazz) {
-            try {
-                if (clazz.getAnnotation(annotationClazz) != null) {
-                    classSet.add(clazz);
-                }
-            } catch (Throwable e) {
-                // do nothing 可能有classNotFoundException
+            if (clazz.getAnnotation(annotationClazz) != null) {
+                classSet.add(clazz);
             }
         }
 
@@ -263,10 +260,13 @@ public class ClassScanner {
         try {
             ClassLoader cl = Thread.currentThread().getContextClassLoader();
             clazz = (Class<T>) Class.forName(className, false, cl);
-        } catch (Throwable e) {
+        } catch (NoClassDefFoundError noClassDefFoundError) {
+            // ignore
+            cannotLoadClassNames.add(className);
+        } catch (Exception e) {
             cannotLoadClassNames.add(className);
             // 取消日志打印,因为失败的东西不少
-            // log.error("classForName is error，className:" + className);
+            log.error("classForName is error，className:{}", className, e);
         }
         return clazz;
     }
