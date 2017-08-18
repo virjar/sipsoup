@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.collect.Sets;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -22,7 +23,6 @@ import com.virjar.sipsoup.parse.expression.SyntaxNode;
  */
 public class XpathUtil {
 
-
     /**
      * 获取同名元素在同胞中的index
      * 
@@ -37,7 +37,7 @@ public class XpathUtil {
                 if (e.equals(cur)) {
                     return index;
                 } else {
-                    index ++;
+                    index++;
                 }
             }
         }
@@ -111,18 +111,19 @@ public class XpathUtil {
         return null;
     }
 
-    public static List<Element> transformToElement(List<SIPNode> SIPNodes) {
-        return Lists.newLinkedList(Iterables.transform(Iterables.filter(SIPNodes, new Predicate<SIPNode>() {
-            @Override
-            public boolean apply(SIPNode input) {
-                return input.getElement() != null;
-            }
-        }), new Function<SIPNode, Element>() {
-            @Override
-            public Element apply(SIPNode input) {
-                return input.getElement();
-            }
-        }));
+    public static List<Element> transformToElement(List<SIPNode> sipNodes) {
+        return Lists.newLinkedList(
+                Sets.newLinkedHashSet(Iterables.transform(Iterables.filter(sipNodes, new Predicate<SIPNode>() {
+                    @Override
+                    public boolean apply(SIPNode input) {
+                        return !input.isText();
+                    }
+                }), new Function<SIPNode, Element>() {
+                    @Override
+                    public Element apply(SIPNode input) {
+                        return input.getElement();
+                    }
+                })));
     }
 
     public static List<String> transformToString(List<SIPNode> SIPNodes) {

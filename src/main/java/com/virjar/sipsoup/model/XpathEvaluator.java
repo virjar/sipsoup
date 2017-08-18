@@ -115,19 +115,7 @@ public abstract class XpathEvaluator {
         private List<SIPNode> handleNode(List<SIPNode> input, final XpathNode xpathNode) {
 
             // 目前只支持对element元素进行抽取,如果中途抽取到了文本,则会断节
-            List<Element> elements = Lists.newLinkedList(
-                    Sets.newLinkedHashSet(Iterables.transform(Iterables.filter(input, new Predicate<SIPNode>() {
-                        @Override
-                        public boolean apply(SIPNode input) {
-                            return !input.isText();
-                        }
-                    }), new Function<SIPNode, Element>() {
-                        @Override
-                        public Element apply(SIPNode input) {
-                            return input.getElement();
-                        }
-                    })));
-
+            List<Element> elements = XpathUtil.transformToElement(input);
             List<Element> contextElements;
 
             // 轴

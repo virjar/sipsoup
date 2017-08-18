@@ -32,7 +32,7 @@ public class SipSoupPredicteJudgeFunction implements FilterFunction {
         }
 
         if (ret instanceof Boolean) {
-            return (boolean) ret;
+            return ret;
         }
 
         if (ret instanceof CharSequence) {
