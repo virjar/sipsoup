@@ -14,8 +14,4 @@ public class Token {
     public static final String FUNCTION = "FUNCTION";
     public static final String BOOLEAN = "BOOLEAN";
 
-    @Deprecated
-    public enum TokenType {
-        OPERATOR, CONSTANT, NUMBER, EXPRESSION, ATTRIBUTE_ACTION, XPATH, FUNCTION, BOOLEAN
-    }
 }
