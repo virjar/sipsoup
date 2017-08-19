@@ -52,7 +52,6 @@ public class ExpressionParser {
         // RPN就是逆波兰式的含义
         List<TokenHolder> RPN = Lists.newLinkedList();
         TokenHolder bottom = new TokenHolder("#", null);
-        bottom.expression = "#";
         stack.push(bottom);
 
         for (TokenHolder tokenHolder : tokenStream) {
