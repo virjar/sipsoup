@@ -6,7 +6,7 @@
 
     <groupId>com.virjar</groupId>
     <artifactId>sipsoup</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.5</version>
     <url>http://maven.apache.org</url>
     <name>sipSoup</name>
     <description>a xpath implementation base on JSoup, dom query mixed with xpath and cssQuery</description>
@@ -161,5 +161,12 @@
             <version>0.0.7</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+
     </dependencies>
 </project>

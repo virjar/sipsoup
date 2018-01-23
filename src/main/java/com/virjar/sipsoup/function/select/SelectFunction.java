@@ -13,5 +13,4 @@ import com.virjar.sipsoup.model.XpathNode;
  */
 public interface SelectFunction extends NameAware {
     List<SIPNode> call(XpathNode.ScopeEm scopeEm, Elements elements, List<String> args);
-
 }

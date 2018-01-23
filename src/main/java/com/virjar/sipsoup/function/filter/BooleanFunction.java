@@ -27,7 +27,7 @@ public class BooleanFunction implements FilterFunction {
             return BooleanUtils.toBoolean(calc.toString());
         }
         if (calc instanceof Integer) {
-            return calc != 0;
+            return ((Integer) calc) != 0;
         }
         if (calc instanceof Number) {
             return ((Number) calc).doubleValue() > 0D;
