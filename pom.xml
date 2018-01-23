@@ -6,7 +6,7 @@
 
     <groupId>com.virjar</groupId>
     <artifactId>sipsoup</artifactId>
-    <version>1.5</version>
+    <version>1.6-SNAPSHOT</version>
     <url>http://maven.apache.org</url>
     <name>sipSoup</name>
     <description>a xpath implementation base on JSoup, dom query mixed with xpath and cssQuery</description>
