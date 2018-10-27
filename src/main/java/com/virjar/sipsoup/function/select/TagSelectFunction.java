@@ -1,15 +1,14 @@
 package com.virjar.sipsoup.function.select;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.virjar.sipsoup.model.SIPNode;
 import com.virjar.sipsoup.model.XpathNode;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.util.List;
 
 /**
  * Created by virjar on 17/6/11.
@@ -27,6 +26,10 @@ public class TagSelectFunction implements SelectFunction {
                 }
             } else {
                 temp.addAll(elements.select(tagName));
+            }
+            if (scopeEm == XpathNode.ScopeEm.RECURSIVE) {
+                //向下递归,不应该包含自身
+                temp.removeAll(elements);
             }
             return Lists.transform(temp, new Function<Element, SIPNode>() {
                 @Override

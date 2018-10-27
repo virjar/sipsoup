@@ -1,13 +1,12 @@
 package com.virjar.sipsoup.model;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.virjar.sipsoup.parse.XpathParser;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.virjar.sipsoup.parse.XpathParser;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by virjar on 17/7/29.

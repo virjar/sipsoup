@@ -1,11 +1,5 @@
 package com.virjar.sipsoup.parse;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.virjar.sipsoup.exception.NoSuchAxisException;
@@ -18,14 +12,19 @@ import com.virjar.sipsoup.model.XpathEvaluator;
 import com.virjar.sipsoup.model.XpathNode;
 import com.virjar.sipsoup.parse.expression.ExpressionParser;
 import com.virjar.sipsoup.parse.expression.SyntaxNode;
-
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by virjar on 17/6/9.
  */
 public class XpathStateMachine {
     private static Map<String, XpathNode.ScopeEm> scopeEmMap = Maps.newHashMap();
+
     static {
         scopeEmMap.put("/", XpathNode.ScopeEm.INCHILREN);
         scopeEmMap.put("//", XpathNode.ScopeEm.RECURSIVE);
@@ -65,8 +64,8 @@ public class XpathStateMachine {
                     } else {
                         subXpath = stateMachine.tokenQueue.chompBalanced('(', ')');
                     }
-                    if(StringUtils.isBlank(subXpath)){
-                        throw new XpathSyntaxErrorException(0,"\"()\" empty sub xpath fond");
+                    if (StringUtils.isBlank(subXpath)) {
+                        throw new XpathSyntaxErrorException(0, "\"()\" empty sub xpath fond");
                     }
                     // subXpath = TokenQueue.unescape(subXpath);
                     // TODO 考虑是否抹掉转义
@@ -129,7 +128,22 @@ public class XpathStateMachine {
             public void parse(XpathStateMachine stateMachine) throws XpathSyntaxErrorException {
                 // 轴解析
                 if (!stateMachine.tokenQueue.hasAxis()) {
-                    stateMachine.state = TAG;
+                    if (stateMachine.tokenQueue.matchesAny("..", ".")) {
+                        //特殊逻辑,求当前节点和父节点的话,转化为一个轴函数
+                        String axisFunctionName;
+                        if (stateMachine.tokenQueue.matches("..")) {
+                            stateMachine.tokenQueue.consume("..");
+                            axisFunctionName = "parent";
+                        } else {
+                            stateMachine.tokenQueue.consume(".");
+                            axisFunctionName = "self";
+                        }
+                        stateMachine.xpathChain.getXpathNodeList().getLast().setAxis(FunctionEnv.getAxisFunction(axisFunctionName));
+                        stateMachine.xpathChain.getXpathNodeList().getLast().setSelectFunction(FunctionEnv.getSelectFunction("self"));
+                        stateMachine.state = SCOPE;
+                    } else {
+                        stateMachine.state = TAG;
+                    }
                     return;
                 }
 
@@ -303,6 +317,7 @@ public class XpathStateMachine {
             public void parse(XpathStateMachine stateMachine) {
             }
         };
+
         public void parse(XpathStateMachine stateMachine) throws XpathSyntaxErrorException {
         }
     }
