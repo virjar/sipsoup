@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLDecoder;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -200,7 +201,7 @@ public class ClassScanner {
 
         // normal file
         if (url.toString().startsWith("file:")) {
-            File f = new File(url.getPath());
+            File f = new File(URLDecoder.decode(url.getPath()));
             if (f.isDirectory()) {
                 List<File> classFileList = new ArrayList<File>();
                 scanClass(classFileList, f.getPath());
