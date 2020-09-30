@@ -9,7 +9,7 @@ import com.virjar.sipsoup.parse.expression.SyntaxNode;
 /**
  * Created by virjar on 17/6/15.
  */
-public class StringLengthFunction extends AbStractStringFunction {
+public class StringLengthFunction extends AbstractStringFunction {
     @Override
     public Object call(Element element, List<SyntaxNode> params) {
         return firstParamToString(element, params).length();

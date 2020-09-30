@@ -11,7 +11,7 @@ import com.virjar.sipsoup.parse.expression.SyntaxNode;
 /**
  * Created by virjar on 17/6/15.
  */
-public class MatchesFunction extends AbStractStringFunction {
+public class MatchesFunction extends AbstractStringFunction {
     @Override
     public Object call(Element element, List<SyntaxNode> params) {
         Preconditions.checkArgument(params.size() >= 2, getName() + " must has 2 parameters");

@@ -11,7 +11,7 @@ import com.virjar.sipsoup.parse.expression.SyntaxNode;
 /**
  * Created by virjar on 17/6/15.
  */
-public abstract class AbStractStringFunction implements FilterFunction {
+public abstract class AbstractStringFunction implements FilterFunction {
     protected String firstParamToString(Element element, List<SyntaxNode> params) {
         Preconditions.checkArgument(params.size() > 0, getName() + " must have parameter at lest 1");
         Object string = params.get(0).calc(element);
